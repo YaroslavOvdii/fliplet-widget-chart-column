@@ -1,0 +1,13 @@
+.highcharts-credits {
+    display: none;
+}
+.highcharts-axis-line {
+    stroke: #6c9f1f;
+}
+.poll-updatedAt {
+    text-align: center;
+    color: #c2c2c2;
+}
+.poll-updatedAt span {
+    color: #888888;
+}

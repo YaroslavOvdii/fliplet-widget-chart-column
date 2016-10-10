@@ -1,1 +1,1 @@
-# fliplet-widget-poll-results
+# Fliplet Poll Results Widget
