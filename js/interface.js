@@ -11,8 +11,6 @@ var $dataSource = $('select#select-data-source');
 var $dataColumns= $('select#select-data-column');
 var organizationId = Fliplet.Env.get('organizationId');
 
-console.log(data);
-
 // Fired from Fliplet Studio when the external save button is clicked
 Fliplet.Widget.onSaveRequest(function () {
   Fliplet.Widget.save({
