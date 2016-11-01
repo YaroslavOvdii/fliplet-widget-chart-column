@@ -1,18 +1,24 @@
 {
-  "name": "Poll Results (Prototype)",
-  "package": "com.fliplet.poll-results",
+  "name": "Column Chart (Prototype)",
+  "package": "com.fliplet.column-chart",
   "version": "1.0.0",
   "icon": "img/icon.png",
-  "tags": ["type:component", "category:polling"],
+  "tags": ["type:component", "category:charts"],
   "provider_only": false,
   "references": [],
-  "html_tag": "span",
+  "html_tag": "div",
   "interface": {
     "dependencies": [
       "fliplet-core",
-      "fliplet-studio-ui"
+      "fliplet-datasources",
+      "fliplet-studio-ui",
+      "jquery",
+      "handlebars",
+      "bootstrap",
+      "lodash"
     ],
     "assets": [
+      "css/interface.css",
       "js/interface.js"
     ]
   },

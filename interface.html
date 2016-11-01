@@ -1,8 +1,124 @@
-<div>
-  This is the interface of your Poll Results widget.
-  <form>
-    <div class="form-group">
-      <input type="text" class="form-control" id="name" placeholder="Name" value="Poll Results"/>
+<div class="widget-holder">
+
+  <header>
+    <p>Configure your column chart</p>
+    <a href="#">Need help?</a>
+  </header>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#data-sources-options" aria-controls="data-sources-options" role="tab" data-toggle="tab">Data source</a></li>
+    <li role="presentation" class="chart-settings disabled"><a href="#chart-settings" aria-controls="chart-settings" role="tab" data-toggle="tab">Chart settings</a></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <div role="tabpanel" class="tab-pane active" id="data-sources-options">
+
+      <div class="form-horizontal">
+        <div class="form-group">
+          <div class="col-sm-4 control-label">
+            <label for="select-menu">Select a data source</label>
+          </div>
+          <div class="col-sm-8">
+            <label for="select-menu" class="select-proxy-display">
+              <span class="icon fa fa-chevron-down"></span>
+              <span class="select-value-proxy">-- Select a data source --</span>
+              <select name="select_datasource" id="select-data-source" data-label="select" class="hidden-select form-control">
+                <option selected value="">-- Select a data source --</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="form-group select-data-column hidden">
+          <div class="col-sm-4 control-label">
+            <label for="select-menu">Select a column</label>
+          </div>
+          <div class="col-sm-8">
+            <label for="select-menu" class="select-proxy-display">
+              <span class="icon fa fa-chevron-down"></span>
+              <span class="select-value-proxy">-- Select a column --</span>
+              <select name="select_datacolumn" id="select-data-column" data-label="select" class="hidden-select form-control">
+                <option selected value="">-- Select a column --</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="controls hidden">
+          <a class="btn btn-default configure-chart" href="#chart-settings" aria-controls="chart-settings" role="tab" data-toggle="tab">Configure chart settings</a>
+        </div>
+      </div>
+
     </div>
-  </form>
+
+    <div role="tabpanel" class="tab-pane" id="chart-settings">
+
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Do you want to enable data legend?</label>
+          <div class="col-sm-8">
+            <div class="checkbox">
+              <input type="checkbox" id="show_data_legend" name="show_data_legend" value="show">
+              <label for="show_data_legend">
+                <span class="check"><i class="fa fa-check"></i></span> Yes, please
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Do you want to enable data values?</label>
+          <div class="col-sm-8">
+            <div class="checkbox">
+              <input type="checkbox" id="show_data_values" name="show_data_values" value="show">
+              <label for="show_data_values">
+                <span class="check"><i class="fa fa-check"></i></span> Yes, please
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-4 control-label">
+            <label for="yaxix-title">Y-Axis title <span class="small-text">(Optional)</span></label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="yaxix_title" name="yaxix-title" placeholder="Enter title" value="">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-4 control-label">
+            <label for="xaxix-title">X-Axis title <span class="small-text">(Optional)</span></label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="xaxix_title" name="xaxix-title" placeholder="Enter title" value="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Do you want to show the total number of entries?</label>
+          <div class="col-sm-8">
+            <div class="checkbox">
+              <input type="checkbox" id="show_total_entries" name="show_total_entries" value="show">
+              <label for="show_total_entries">
+                <span class="check"><i class="fa fa-check"></i></span> Yes, please
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Do you want to automatically get new data?</label>
+          <div class="col-sm-8">
+            <div class="checkbox">
+              <input type="checkbox" id="auto_refresh" name="auto_refresh" value="refresh">
+              <label for="auto_refresh">
+                <span class="check"><i class="fa fa-check"></i></span> Yes, please
+              </label>
+              <span class="text-helper">The chart will get new data every 5 seconds.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
