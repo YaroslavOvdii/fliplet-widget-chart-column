@@ -65,7 +65,7 @@ $('[data-poll-results-id]').each(function () {
         enabled: false
       },
       xAxis: {
-        categories: data.entries,
+        categories: data.entries, // THIS NEEDS TO BE UPDATED TO AN ARRAY WITH ONLY THE UNIQUE ENTRIES
         labels: {
           enabled: data.show_data_legend
         },
