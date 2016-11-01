@@ -27,7 +27,8 @@
       "jquery",
       "bootstrap",
       "font-awesome",
-      "fliplet-core"
+      "fliplet-core",
+      "fliplet-datasources"
     ],
     "assets": [
       "css/build.css",
