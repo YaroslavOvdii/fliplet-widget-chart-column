@@ -65,10 +65,10 @@ $dataSource.on('change', function(){
   var selectedText = $(this).find("option:selected").text();
 
   $dataColumns.html('');
+  $dataColumns.append('<option selected value="">-- Select a column --</option>').trigger('change');
   // Appends Column Titles to new Select Box
   data.dataSources.forEach(function(dataSource) {
     if ( dataSource.hasOwnProperty('id') && dataSource.id == selectedValue ) {
-      $dataColumns.append('<option selected value="">-- Select a column --</option>').trigger('change');
       dataSource.columns.forEach(function(column) {
         $dataColumns.append('<option value="' + column + '">' + column + '</option>');
       });
