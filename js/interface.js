@@ -92,10 +92,6 @@ $('.configure-chart').on('click', function() {
 });
 
 // FUNCTIONS
-function parseDataSources() {
-
-}
-
 function showColumnSelect() {
   if ($('#select-data-source').val() !== 'none') {
     $('.select-data-column').removeClass('hidden');
