@@ -78,7 +78,7 @@ $dataSource.on('change', function(){
   $(this).parents('.select-proxy-display').find('.select-value-proxy').html(selectedText);
   showColumnSelect();
   checkDataIsConfigured();
-})
+});
 
 $dataColumns.on('change', function() {
   var selectedValue = $(this).val();
