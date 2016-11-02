@@ -109,31 +109,19 @@ $dataColumns.on('change', function() {
   checkDataIsConfigured();
 });
 
-$('.configure-chart').on('click', function() {
-	$('.chart-settings a').trigger('click');
-});
-
 // FUNCTIONS
 function showColumnSelect() {
   if ($('#select-data-source').val() !== 'none') {
     $('.select-data-column').removeClass('hidden');
   } else {
-    if (!$('.select-data-column').hasClass('hidden')) {
-      $('.select-data-column').addClass('hidden');
-    }
+    $('.select-data-column').addClass('hidden');
   }
 }
 
 function checkDataIsConfigured() {
   if ($('#select-data-source').val() !== '' && $('#select-data-column').val() !== '') {
-    $('.nav-tabs .chart-settings.disabled').removeClass('disabled');
-    $('.controls').removeClass('hidden');
+    $('#chart-settings').removeClass('hidden');
   } else {
-    if ( !$('.nav-tabs .chart-settings').hasClass('disabled') ) {
-      $('.nav-tabs .chart-settings').addClass('disabled');
-    }
-    if ( !$('.controls').hasClass('hidden') ) {
-    	$('.controls').addClass('hidden');
-    }
+    $('#chart-settings').addClass('hidden');
   }
 }
