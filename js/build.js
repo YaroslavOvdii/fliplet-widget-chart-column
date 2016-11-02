@@ -6,7 +6,7 @@ $('[data-poll-results-id]').each(function () {
   var $el = $(this).find('.poll-container');
   data.entries = [];
 
-  // TODO: REFRESH SHOULD START here
+  // @TODO: REFRESH SHOULD START here
   // GETS DATA SOURCES
   Fliplet.DataSources.get({
     organizationId: organizationId
@@ -43,7 +43,7 @@ $('[data-poll-results-id]').each(function () {
       // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
       data.totalEntries = data.entries.length;
 
-      // TODO:
+      // @TODO:
       // - SEARCH data.entries FOR DUPLICATES
       // - CREATE ARRAY/OBJECT THAT AGGRAGATES UNIQUE ENTRIES WITH THE NUMBER OF ROWS THAT ENTRY HAS
 
@@ -65,7 +65,8 @@ $('[data-poll-results-id]').each(function () {
         enabled: false
       },
       xAxis: {
-        categories: data.entries, // THIS NEEDS TO BE UPDATED TO AN ARRAY WITH ONLY THE UNIQUE ENTRIES
+        // @TODO: THIS NEEDS TO BE UPDATED TO AN ARRAY WITH ONLY THE UNIQUE ENTRIES
+        categories: data.entries,
         labels: {
           enabled: data.show_data_legend
         },
@@ -100,7 +101,8 @@ $('[data-poll-results-id]').each(function () {
       },
       series: [{
         name: data.x_axix_title,
-        data: [25, 15, 60, 25, 15, 60], //THIS NEEDS TO BE UPDATED TO SHOW THE TOTAL NUMBER OF EACH UNIQUE ENTRY
+        // @TODO: THIS NEEDS TO BE UPDATED TO SHOW THE TOTAL NUMBER OF EACH UNIQUE ENTRY
+        data: [25, 15, 60, 25, 15, 60],
         color: '#3276b1',
         dataLabels: {
           enabled: data.show_data_values,
