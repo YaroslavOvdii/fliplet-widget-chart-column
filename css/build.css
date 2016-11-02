@@ -4,10 +4,12 @@
 .highcharts-axis-line {
     stroke: #6c9f1f;
 }
-.chart-column-updatedAt {
+.chart-column-updatedAt,
+.chart-column-total {
     text-align: center;
     color: #c2c2c2;
 }
-.chart-column-updatedAt span {
+.chart-column-updatedAt > .updatedAt,
+.chart-column-total > .total {
     color: #888888;
 }

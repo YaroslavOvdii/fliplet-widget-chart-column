@@ -25,6 +25,7 @@
   "build": {
     "dependencies": [
       "jquery",
+      "moment",
       "bootstrap",
       "font-awesome",
       "fliplet-core",

@@ -3,19 +3,27 @@ $('[data-chart-column-id]').each(function () {
   var organizationId = Fliplet.Env.get('organizationId');
   var ignoreDataSourceTypes = ['menu']; // Ignores Menus on the data sources
   var chartLoaded = false;
-  var $el = $(this).find('.chart-column-container');
-  var refreshTimeout = 1000;
-  data.entries = [];
-  data.totalEntries = 0;
-  data.columns = [];
-  data.values = [];
+  var $container = $(this);
+  var $el = $container.find('.chart-column-container');
+  var refreshTimeout = 5000;
+  // var updateDateFormat = 'MMMM Do YYYY, h:mm:ss a';
+  var updateDateFormat = 'hh:mm:ss a';
+
+  function resetData() {
+    data.entries = [];
+    data.totalEntries = 0;
+    data.columns = [];
+    data.values = [];
+  }
 
   function requestData() {
     // GETS DATA SOURCES
+    resetData();
     Fliplet.DataSources.connect(data.dataSourceId).then(function(source){
       return source.find();
     }).then(function(rows){
       // GETS ALL THE ROWS FOR A SPECIFIC COLUMN
+      data.entries = [];
       rows.forEach(function(row) {
         var value = row.data[data.dataSourceColumn];
         data.entries.push(row.data[data.dataSourceColumn]);
@@ -35,16 +43,23 @@ $('[data-chart-column-id]').each(function () {
       } else {
         // Retrieve chart object
         var chart = $el.data('chartColumn');
-        // @TODO: Update values
-        // @TODO: Update last updated time
+
+        // Update values
+        chart.series[0].setData(data.values);
 
         setTimeout(requestData, refreshTimeout);
       }
+
+      // Update total count
+      $container.find('.total').text(data.totalEntries);
+      // Update last updated time
+      $container.find('.updatedAt').text(moment().format(updateDateFormat));
+
     });
   }
 
   function drawChart() {
-    var chart = new Highcharts.Chart({
+    var chartOpt = {
       chart: {
         type: 'column',
         renderTo: $el[0],
@@ -62,10 +77,10 @@ $('[data-chart-column-id]').each(function () {
         text: ''
       },
       xAxis: {
-        // @TODO: THIS NEEDS TO BE UPDATED TO AN ARRAY WITH ONLY THE UNIQUE ENTRIES
         categories: data.columns,
-        labels: {
-          enabled: data.show_data_legend
+        title: {
+          text: data.x_axix_title,
+          enabled: (data.x_axix_title !== '' ? true : false)
         },
         crosshair: true,
         gridLineWidth: 0
@@ -82,10 +97,12 @@ $('[data-chart-column-id]').each(function () {
         gridLineWidth: 0
       },
       tooltip: {
-        enabled: false,
+        enabled: !data.show_data_values,
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y}</b></td></tr>',
+        pointFormat: [
+          '<tr><td style="color:{series.color};padding:0">{series.name}: </td>',
+          '<td style="padding:0"><b>{point.y}</b></td></tr>'
+        ].join(''),
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -98,7 +115,6 @@ $('[data-chart-column-id]').each(function () {
       },
       series: [{
         name: data.x_axix_title,
-        // @TODO: THIS NEEDS TO BE UPDATED TO SHOW THE TOTAL NUMBER OF EACH UNIQUE ENTRY
         data: data.values,
         color: '#3276b1',
         dataLabels: {
@@ -109,11 +125,11 @@ $('[data-chart-column-id]').each(function () {
         }
       }],
       legend: {
-        enabled: (data.x_axix_title !== '' ? true : false)
+        enabled: data.show_data_legend
       }
-    });
-    // Save chart object
-    $el.data('chartColumn',chart);
+    };
+    // Create and save chart object
+    $el.data('chartColumn', new Highcharts.Chart(chartOpt));
   }
 
   requestData();
