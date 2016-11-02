@@ -26,13 +26,26 @@ $('[data-chart-column-id]').each(function () {
       data.entries = [];
       rows.forEach(function(row) {
         var value = row.data[data.dataSourceColumn];
-        data.entries.push(row.data[data.dataSourceColumn]);
+        data.entries.push(value);
 
-        if ( data.columns.indexOf(value) === -1 ) {
-          data.columns.push(value);
-          data.values[data.columns.indexOf(value)] = 1;
+        if (value.constructor.name === 'Array') {
+          // Value is an array
+          value.forEach(function(elem) {
+            if ( data.columns.indexOf(elem) === -1 ) {
+              data.columns.push(elem);
+              data.values[data.columns.indexOf(elem)] = 1;
+            } else {
+              data.values[data.columns.indexOf(elem)]++;
+            }
+          });
         } else {
-          data.values[data.columns.indexOf(value)]++;
+          // Value is not an array
+          if ( data.columns.indexOf(value) === -1 ) {
+            data.columns.push(value);
+            data.values[data.columns.indexOf(value)] = 1;
+          } else {
+            data.values[data.columns.indexOf(value)]++;
+          }
         }
       });
       // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
