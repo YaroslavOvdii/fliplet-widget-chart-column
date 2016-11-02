@@ -1,72 +1,69 @@
-$('[data-poll-results-id]').each(function () {
-  var data = Fliplet.Widget.getData( $(this).data('poll-results-id') );
+$('[data-chart-column-id]').each(function () {
+  var data = Fliplet.Widget.getData( $(this).data('chart-column-id') );
   var organizationId = Fliplet.Env.get('organizationId');
   var ignoreDataSourceTypes = ['menu']; // Ignores Menus on the data sources
-
-  var $el = $(this).find('.poll-container');
+  var chartLoaded = false;
+  var $el = $(this).find('.chart-column-container');
+  var refreshTimeout = 1000;
   data.entries = [];
+  data.totalEntries = 0;
+  data.columns = [];
+  data.values = [];
 
-  // @TODO: REFRESH SHOULD START here
-  // GETS DATA SOURCES
-  Fliplet.DataSources.get({
-    organizationId: organizationId
-  }).then(function (dataSources) {
-    // FILTER DATA SOURCES TO EXCLUDE MENUS
-    var filteredDataSources = dataSources.filter(function (dataSource) {
-      for (var i = 0; i < ignoreDataSourceTypes.length; i++) {
-        if (ignoreDataSourceTypes[i] === dataSource.type) {
-          return false;
-        }
-      }
-      return true;
-    });
-
-    // GETS THE ROWS OF THE DATA SOURCE
-    Promise.all(filteredDataSources.map(function (dataSource) {
-      return Fliplet.DataSources.connect(dataSource.id).then(function (source) {
-        return source.find();
-      }).then(function (rows) {
-        dataSource.rows = rows.map(function (row) {
-          return row.data;
-        });
-        return Promise.resolve(dataSource);
-      });
-    })).then(function (dataSources) {
+  function requestData() {
+    // GETS DATA SOURCES
+    Fliplet.DataSources.connect(data.dataSourceId).then(function(source){
+      return source.find();
+    }).then(function(rows){
       // GETS ALL THE ROWS FOR A SPECIFIC COLUMN
-      dataSources.forEach(function (dataSource) {
-        if ( dataSource.hasOwnProperty('id') && dataSource.id == data.dataSourceId ) {
-          dataSource.rows.forEach(function(row) {
-            data.entries.push(row[data.dataSourceColumn]);
-          });
+      rows.forEach(function(row) {
+        var value = row.data[data.dataSourceColumn];
+        data.entries.push(row.data[data.dataSourceColumn]);
+
+        if ( data.columns.indexOf(value) === -1 ) {
+          data.columns.push(value);
+          data.values[data.columns.indexOf(value)] = 1;
+        } else {
+          data.values[data.columns.indexOf(value)]++;
         }
       });
       // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
       data.totalEntries = data.entries.length;
 
-      // @TODO:
-      // - SEARCH data.entries FOR DUPLICATES
-      // - CREATE ARRAY/OBJECT THAT AGGRAGATES UNIQUE ENTRIES WITH THE NUMBER OF ROWS THAT ENTRY HAS
+      if (!chartLoaded) {
+        drawChart();
+      } else {
+        // Retrieve chart object
+        var chart = $el.data('chartColumn');
+        // @TODO: Update values
+        // @TODO: Update last updated time
 
-      drawChart();
+        setTimeout(requestData, refreshTimeout);
+      }
     });
-  });
+  }
 
   function drawChart() {
-    $el.highcharts({
+    var chart = new Highcharts.Chart({
       chart: {
-        type: 'column'
+        type: 'column',
+        renderTo: $el[0],
+        events: {
+          load: function(){
+            chartLoaded = true;
+            setTimeout(requestData, refreshTimeout);
+          }
+        }
       },
-        title: {
-        text: '',
-        enabled: false
+      title: {
+        text: ''
       },
       subtitle: {
-        text: '',
-        enabled: false
+        text: ''
       },
       xAxis: {
         // @TODO: THIS NEEDS TO BE UPDATED TO AN ARRAY WITH ONLY THE UNIQUE ENTRIES
-        categories: data.entries,
+        categories: data.columns,
         labels: {
           enabled: data.show_data_legend
         },
@@ -102,7 +99,7 @@ $('[data-poll-results-id]').each(function () {
       series: [{
         name: data.x_axix_title,
         // @TODO: THIS NEEDS TO BE UPDATED TO SHOW THE TOTAL NUMBER OF EACH UNIQUE ENTRY
-        data: [25, 15, 60, 25, 15, 60],
+        data: data.values,
         color: '#3276b1',
         dataLabels: {
           enabled: data.show_data_values,
@@ -115,5 +112,9 @@ $('[data-poll-results-id]').each(function () {
         enabled: (data.x_axix_title !== '' ? true : false)
       }
     });
+    // Save chart object
+    $el.data('chartColumn',chart);
   }
+
+  requestData();
 });

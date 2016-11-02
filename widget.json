@@ -1,5 +1,5 @@
 {
-  "name": "Column Chart (Prototype)",
+  "name": "Column Chart",
   "package": "com.fliplet.column-chart",
   "version": "1.0.0",
   "icon": "img/icon.png",
@@ -28,7 +28,8 @@
       "bootstrap",
       "font-awesome",
       "fliplet-core",
-      "fliplet-datasources"
+      "fliplet-datasources",
+      "lodash"
     ],
     "assets": [
       "css/build.css",
