@@ -1,10 +1,7 @@
 Fliplet.Navigator.onReady().then(function(){
   $('[data-chart-column-id]').each(function () {
     var data = Fliplet.Widget.getData( $(this).data('chart-column-id') );
-    var organizationId = Fliplet.Env.get('organizationId');
-    var ignoreDataSourceTypes = ['menu']; // Ignores Menus on the data sources
     var $container = $(this);
-    var $el = $container.find('.chart-column-container');
     var refreshTimeout = 5000;
     // var updateDateFormat = 'MMMM Do YYYY, h:mm:ss a';
     var updateDateFormat = 'hh:mm:ss a';
@@ -66,7 +63,7 @@ Fliplet.Navigator.onReady().then(function(){
 
     function refreshChart() {
       // Retrieve chart object
-      var chart = $el.data('chartColumn');
+      var chart = $container.data('chart-column');
       // Update x-axis categories
       chart.xAxis[0].categories = data.columns;
       // Update values
@@ -87,7 +84,7 @@ Fliplet.Navigator.onReady().then(function(){
       var chartOpt = {
         chart: {
           type: 'column',
-          renderTo: $el[0],
+          renderTo: $container.find('.chart-column-container')[0],
           events: {
             load: function(){
               getLatestData();
@@ -153,7 +150,7 @@ Fliplet.Navigator.onReady().then(function(){
         }
       };
       // Create and save chart object
-      $el.data('chartColumn', new Highcharts.Chart(chartOpt));
+      $container.data('chart-column', new Highcharts.Chart(chartOpt));
     }
 
     refreshData().then(function(){
