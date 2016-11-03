@@ -127,7 +127,7 @@ $('[data-chart-column-id]').each(function () {
         }
       },
       series: [{
-        name: data.x_axix_title,
+        name: data.dataSourceColumn,
         data: data.values,
         color: '#3276b1',
         dataLabels: {
