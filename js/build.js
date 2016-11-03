@@ -57,6 +57,8 @@ $('[data-chart-column-id]').each(function () {
         // Retrieve chart object
         var chart = $el.data('chartColumn');
 
+        // Update x-axis categories
+        chart.xAxis[0].categories = data.columns;
         // Update values
         chart.series[0].setData(data.values);
 
