@@ -1,7 +1,7 @@
 Fliplet.Navigator.onReady().then(function(){
-  $('[data-chart-column-id]').each(function () {
+  $('[data-chart-column-id]').each(function (i, el) {
     var data = Fliplet.Widget.getData( $(this).data('chart-column-id') );
-    var $container = $(this);
+    var $container = $(el);
     var refreshTimeout = 5000;
     // var updateDateFormat = 'MMMM Do YYYY, h:mm:ss a';
     var updateDateFormat = 'hh:mm:ss a';
@@ -56,9 +56,9 @@ Fliplet.Navigator.onReady().then(function(){
 
     function refreshChartInfo() {
       // Update total count
-      $container.find('.total').text(data.totalEntries);
+      $container.find('.total').html(data.totalEntries);
       // Update last updated time
-      $container.find('.updatedAt').text(moment().format(updateDateFormat));
+      $container.find('.updatedAt').html(moment().format(updateDateFormat));
     }
 
     function refreshChart() {
@@ -87,6 +87,7 @@ Fliplet.Navigator.onReady().then(function(){
           renderTo: $container.find('.chart-column-container')[0],
           events: {
             load: function(){
+              refreshChartInfo();
               getLatestData();
             }
           }
@@ -153,9 +154,6 @@ Fliplet.Navigator.onReady().then(function(){
       $container.data('chart-column', new Highcharts.Chart(chartOpt));
     }
 
-    refreshData().then(function(){
-      drawChart();
-      refreshChartInfo();
-    });
+    refreshData().then(drawChart);
   });
 });
