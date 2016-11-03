@@ -13,9 +13,9 @@
       <div class="col-sm-8">
         <label for="select-menu" class="select-proxy-display">
           <span class="icon fa fa-chevron-down"></span>
-          <span class="select-value-proxy">-- Select a data source --</span>
+          <span class="select-value-proxy">Loading...</span>
           <select name="select_datasource" id="select-data-source" data-label="select" class="hidden-select form-control">
-            <option selected value="">-- Select a data source --</option>
+            <option selected value="">Loading...</option>
           </select>
         </label>
       </div>
@@ -99,5 +99,19 @@
     </div>
 
   </div>
+
+  <template name="dataSourceTemplate">
+    <option selected value="">-- Select a data source --</option>
+    \{{#each this}}
+    <option value="\{{id}}">\{{name}}</option>
+    \{{/each}}
+  </template>
+
+  <template name="dataColumnTemplate">
+    <option selected value="">-- Select a column --</option>
+    \{{#each this}}
+    <option value="\{{this}}">\{{this}}</option>
+    \{{/each}}
+  </template>
 
 </div>

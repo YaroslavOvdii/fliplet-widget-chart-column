@@ -8,12 +8,15 @@ var data = Fliplet.Widget.getData() || {
 };
 
 var $dataSource = $('select#select-data-source');
-var $dataColumns= $('select#select-data-column');
+var $dataColumns = $('select#select-data-column');
 var organizationId = Fliplet.Env.get('organizationId');
 var ignoreDataSourceTypes = ['menu'];
+var initialised = false;
 
 // Fired from Fliplet Studio when the external save button is clicked
 Fliplet.Widget.onSaveRequest(function () {
+  if (!initialised) return Fliplet.Widget.complete();
+
   Fliplet.Widget.save({
     dataSourceId: $dataSource.val(),
     dataSourceColumn: $dataColumns.val(),
@@ -53,20 +56,23 @@ Fliplet.DataSources.get({
     });
   })).then(function (dataSources) {
     data.dataSources = dataSources;
-    dataSources.forEach(function (dataSource) {
-      // APPEND DATA SOURCES NAMES AND ID
-      $dataSource.append('<option value="' + dataSource.id + '">' + dataSource.name + '</option>');
-    });
+    var templateSource = $('template[name="dataSourceTemplate"]').html();
+    var template = Handlebars.compile(templateSource);
+    $dataSource.html(template(dataSources));
 
     // LOADS DATA SOURCE DATA
     // NEEDS TO BE DONE HERE BECAUSE THE SELECT BOX NEEDS TO BE DYNAMIC UPDATED
     if (data.dataSourceId) {
       $dataSource.val(data.dataSourceId).trigger('change');
       showColumnSelect();
+    } else {
+      $dataSource.trigger('change');
     }
     if ( data.dataSourceId && data.dataSourceColumn ) {
       $dataColumns.val(data.dataSourceColumn).trigger('change');
     }
+
+    initialised = true;
   });
 });
 
@@ -86,19 +92,16 @@ $dataSource.on('change', function(){
   var selectedValue = $(this).val();
   var selectedText = $(this).find("option:selected").text();
 
-  $dataColumns.html('');
-  $dataColumns.append('<option selected value="">-- Select a column --</option>').trigger('change');
-  // Appends Column Titles to new Select Box
-  data.dataSources.forEach(function(dataSource) {
-    if ( dataSource.hasOwnProperty('id') && dataSource.id == selectedValue ) {
-      dataSource.columns.forEach(function(column) {
-        $dataColumns.append('<option value="' + column + '">' + column + '</option>');
-      });
-    }
-  });
+  var templateSource = $('template[name="dataColumnTemplate"]').html();
+  var template = Handlebars.compile(templateSource);
+
+  var dataSource = _.find(data.dataSources, {id: parseInt(selectedValue,10)});
+  if (typeof dataSource !== 'undefined') {
+    $dataColumns.html(template(dataSource.columns));
+    showColumnSelect();
+  }
 
   $(this).parents('.select-proxy-display').find('.select-value-proxy').html(selectedText);
-  showColumnSelect();
   checkDataIsConfigured();
 });
 
@@ -111,7 +114,7 @@ $dataColumns.on('change', function() {
 
 // FUNCTIONS
 function showColumnSelect() {
-  if ($('#select-data-source').val() !== 'none') {
+  if ($dataSource.val() !== 'none') {
     $('.select-data-column').removeClass('hidden');
   } else {
     $('.select-data-column').addClass('hidden');
@@ -119,7 +122,7 @@ function showColumnSelect() {
 }
 
 function checkDataIsConfigured() {
-  if ($('#select-data-source').val() !== '' && $('#select-data-column').val() !== '') {
+  if ($dataSource.val() !== '' && $dataColumns.val() !== '') {
     $('#chart-settings').removeClass('hidden');
   } else {
     $('#chart-settings').addClass('hidden');
