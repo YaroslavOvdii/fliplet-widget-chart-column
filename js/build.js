@@ -71,8 +71,6 @@ $('[data-chart-column-id]').each(function () {
     // Update values
     chart.series[0].setData(data.values);
     refreshChartInfo();
-
-    setTimeout(refreshData, refreshTimeout);
   }
 
   function getLatestData() {
