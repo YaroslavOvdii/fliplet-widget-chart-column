@@ -71,7 +71,7 @@ a {
 
 header {
     display: flex;
-    font-size: 0.8em;
+    font-size: 1em;
     border-bottom: 1px solid #E3E9EB;
     margin-bottom: 3rem;
     padding-bottom: 1.5em;
@@ -294,9 +294,4 @@ label span.small-text {
 
 .tab-content {
     padding: 30px 0 0;
-}
-@media only screen and (min-width: 640px) {
-    header {
-        font-size: 1.0em;
-    }
 }
