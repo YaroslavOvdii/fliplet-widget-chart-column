@@ -1,4 +1,4 @@
-Fliplet.Navigator.onReady().then(function(){
+function init(){
   $('[data-chart-column-id]').each(function (i, el) {
     var data = Fliplet.Widget.getData( $(this).data('chart-column-id') );
     var $container = $(el);
@@ -156,4 +156,13 @@ Fliplet.Navigator.onReady().then(function(){
 
     refreshData().then(drawChart);
   });
+}
+
+var debounceLoad = _.debounce(init, 500);
+
+Fliplet.Studio.onEvent(function (event) {
+  if (event.detail.event === 'reload-widget-instance') {
+    debounceLoad();
+  }
 });
+init();
