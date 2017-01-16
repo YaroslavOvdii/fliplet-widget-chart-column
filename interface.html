@@ -35,6 +35,28 @@
     </div>
   </div>
 
+  <div class="form-horizontal" id="column-sort-order">
+    <div class="form-group select-data-column hidden">
+      <div class="col-sm-4 control-label">
+        <label>Sort order</label>
+      </div>
+      <div class="col-sm-8">
+        <label  class="select-proxy-display">
+          <span class="icon fa fa-chevron-down"></span>
+          <span class="select-value-proxy">Alphabetically (A &rarr; Z)</span>
+          <select name="select_datasortorder" id="select-data-sort-order" data-label="select" class="hidden-select form-control">
+            <option value="alphabetical_asc" selected>Alphabetically (A &rarr; Z)</option>
+            <option value="alphabetical_desc">Alphabetically (Z &rarr; A)</option>
+            <option value="timestamp_asc">As date/time (Oldest first)</option>
+            <option value="timestamp_desc">As date/time (Most recent first)</option>
+            <option value="value_asc">By value (smallest first)</option>
+            <option value="value_desc">By value (largest first)</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
+
   <div class="form-horizontal hidden" id="chart-settings">
     <div class="form-group">
       <label class="col-sm-4 control-label">Do you want to enable data legend?</label>

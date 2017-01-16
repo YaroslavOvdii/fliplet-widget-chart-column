@@ -9,6 +9,7 @@ var data = Fliplet.Widget.getData() || {
 
 var $dataSource = $('select#select-data-source');
 var $dataColumns = $('select#select-data-column');
+var $dataSortOrder = $('select#select-data-sort-order');
 var organizationId = Fliplet.Env.get('organizationId');
 var ignoreDataSourceTypes = ['menu'];
 var initialised = false;
@@ -20,6 +21,7 @@ Fliplet.Widget.onSaveRequest(function () {
   Fliplet.Widget.save({
     dataSourceId: $dataSource.val(),
     dataSourceColumn: $dataColumns.val(),
+    dataSortOrder: $dataSortOrder.find(':selected').val(),
     show_data_legend: ($('#show_data_legend:checked').val() === "show" ? true : false),
     show_data_values: ($('#show_data_values:checked').val() === "show" ? true : false),
     y_axix_title: $('#yaxix_title').val(),
@@ -65,6 +67,8 @@ Fliplet.DataSources.get({
     if (data.dataSourceId) {
       $dataSource.val(data.dataSourceId).trigger('change');
       showColumnSelect();
+      $dataSortOrder.val(data.dataSortOrder);
+      $dataSortOrder.trigger('change');
     } else {
       $dataSource.trigger('change');
     }
@@ -106,10 +110,14 @@ $dataSource.on('change', function(){
 });
 
 $dataColumns.on('change', function() {
-  var selectedValue = $(this).val();
   var selectedText = $(this).find("option:selected").text();
   $(this).parents('.select-proxy-display').find('.select-value-proxy').html(selectedText);
   checkDataIsConfigured();
+});
+
+$dataSortOrder.on('change', function(){
+  var selectedText = $(this).find("option:selected").text();
+  $(this).parents('.select-proxy-display').find('.select-value-proxy').html(selectedText);
 });
 
 // FUNCTIONS
