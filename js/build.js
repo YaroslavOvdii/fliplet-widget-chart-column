@@ -14,6 +14,57 @@ function init(){
         data.values = [];
       }
 
+      function sortData() {
+        var sortMethod = data.dataSortOrder.split('_')[0];
+        var sortOrder = data.dataSortOrder.split('_')[1];
+        var objArr = [];
+        for (var i = 0, l = data.columns.length; i < l; i++) {
+          objArr.push({
+            column: data.columns[i],
+            value: (data.values[i] !== undefined ? data.values[i] : 0)
+          });
+        }
+        switch (sortMethod) {
+          case 'alphabetical':
+            objArr.sort(function(a, b){
+              var keyA = a.column,
+                  keyB = b.column;
+              // Compare the 2 dates
+              if(keyA < keyB) return (sortOrder === 'asc' ? -1 : 1);
+              if(keyA > keyB) return (sortOrder === 'asc' ? 1 : -1);
+              return 0;
+            });
+            break;
+          case 'timestamp':
+            objArr.sort(function(a, b){
+              var keyA = moment(a.column),
+                  keyB = moment(b.column);
+              // Compare the 2 dates
+              if(keyA.isBefore(keyB)) return (sortOrder === 'asc' ? -1 : 1);
+              if(keyA.isAfter(keyB)) return (sortOrder === 'asc' ? 1 : -1);
+              return 0;
+            });
+            break;
+          case 'value':
+          default:
+            objArr.sort(function(a, b){
+              var valueA = a.value,
+                  valueB = b.value;
+              // Compare the 2 dates
+              if(valueA < valueB) return (sortOrder === 'asc' ? -1 : 1);
+              if(valueA > valueB) return (sortOrder === 'asc' ? 1 : -1);
+              return 0;
+            });
+            break;
+        }
+        data.columns = [];
+        data.values = [];
+        for (i = 0, l = objArr.length; i < l; i++) {
+          data.columns.push(objArr[i].column);
+          data.values.push(objArr[i].value);
+        }
+      }
+
       function refreshData() {
         return new Promise(function(resolve, reject){
           // GETS DATA SOURCES
@@ -48,6 +99,7 @@ function init(){
                 }
               }
             });
+            sortData();
             // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
             data.totalEntries = data.entries.length;
 
