@@ -76,7 +76,9 @@ function init(){
         setTimeout(function(){
           refreshData().then(function(){
             refreshChart();
-            getLatestData();
+            if (data.auto_refresh) {
+              getLatestData();
+            }
           });
         }, refreshTimeout);
       }
@@ -89,7 +91,9 @@ function init(){
             events: {
               load: function(){
                 refreshChartInfo();
-                getLatestData();
+                if (data.auto_refresh) {
+                  getLatestData();
+                }
               }
             }
           },
