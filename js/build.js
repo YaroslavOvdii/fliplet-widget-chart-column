@@ -15,8 +15,12 @@ function init(){
       }
 
       function sortData() {
-        var sortMethod = data.dataSortOrder.split('_')[0];
-        var sortOrder = data.dataSortOrder.split('_')[1];
+        var sortMethod = 'alphabetical';
+        var sortOrder = 'asc';
+        if (data.dataSortOrder) {
+          sortMethod = data.dataSortOrder.split('_')[0];
+          sortOrder = data.dataSortOrder.split('_')[1];
+        }
         var objArr = [];
         for (var i = 0, l = data.columns.length; i < l; i++) {
           objArr.push({
