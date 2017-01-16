@@ -25,6 +25,7 @@ function init(){
             data.entries = [];
             rows.forEach(function(row) {
               var value = row.data[data.dataSourceColumn];
+              value = $.trim(value);
               data.entries.push(value);
 
               if (value.constructor.name === 'Array') {
