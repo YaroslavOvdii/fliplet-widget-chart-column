@@ -70,45 +70,47 @@ function init(){
       }
 
       function refreshData() {
-        return new Promise(function(resolve, reject){
-          // GETS DATA SOURCES
-          resetData();
-          Fliplet.DataSources.connect(data.dataSourceId).then(function(source){
-            return source.find();
-          }).then(function(rows){
-            // GETS ALL THE ROWS FOR A SPECIFIC COLUMN
-            data.entries = [];
-            rows.forEach(function(row) {
-              var value = row.data[data.dataSourceColumn];
-              value = $.trim(value);
-              data.entries.push(value);
+        return Fliplet.DataSources.fetchWithOptions({
+          dataSourceId: data.dataSourceId,
+          columns: [data.dataSourceColumn]
+        }).then(function(result){
+          data.entries = [];
+          data.columns = [];
+          data.values = [];
+          data.totalEntries = 0;
+          if (result.dataSource.columns.indexOf(data.dataSourceColumn) < 0) {
+            return Promise.resolve();
+          }
+          result.dataSourceEntries.forEach(function(row) {
+            var value = row[data.dataSourceColumn];
+            value = $.trim(value);
+            data.entries.push(value);
 
-              if (value.constructor.name === 'Array') {
-                // Value is an array
-                value.forEach(function(elem) {
-                  if ( data.columns.indexOf(elem) === -1 ) {
-                    data.columns.push(elem);
-                    data.values[data.columns.indexOf(elem)] = 1;
-                  } else {
-                    data.values[data.columns.indexOf(elem)]++;
-                  }
-                });
-              } else {
-                // Value is not an array
-                if ( data.columns.indexOf(value) === -1 ) {
-                  data.columns.push(value);
-                  data.values[data.columns.indexOf(value)] = 1;
+            if (value.constructor.name === 'Array') {
+              // Value is an array
+              value.forEach(function(elem) {
+                if ( data.columns.indexOf(elem) === -1 ) {
+                  data.columns.push(elem);
+                  data.values[data.columns.indexOf(elem)] = 1;
                 } else {
-                  data.values[data.columns.indexOf(value)]++;
+                  data.values[data.columns.indexOf(elem)]++;
                 }
+              });
+            } else {
+              // Value is not an array
+              if ( data.columns.indexOf(value) === -1 ) {
+                data.columns.push(value);
+                data.values[data.columns.indexOf(value)] = 1;
+              } else {
+                data.values[data.columns.indexOf(value)]++;
               }
-            });
-            sortData();
-            // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
-            data.totalEntries = data.entries.length;
-
-            return resolve();
+            }
           });
+          sortData();
+          // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
+          data.totalEntries = data.entries.length;
+
+          return Promise.resolve();
         });
       }
 
