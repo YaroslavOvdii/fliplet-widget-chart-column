@@ -27,8 +27,7 @@ Fliplet.Widget.onSaveRequest(function () {
     y_axix_title: $('#yaxix_title').val(),
     x_axix_title: $('#xaxix_title').val(),
     show_total_entries: ($('#show_total_entries:checked').val() === "show" ? true : false),
-    auto_refresh: ($('#auto_refresh:checked').val() === "refresh" ? true : false),
-    dataSources: data.dataSources
+    auto_refresh: ($('#auto_refresh:checked').val() === "refresh" ? true : false)
   }).then(function () {
     Fliplet.Widget.complete();
   });
@@ -39,7 +38,7 @@ Fliplet.DataSources.get({
   organizationId: organizationId
 }).then(function (dataSources) {
   var filteredDataSources = dataSources.filter(function (dataSource) {
-    for (var i = 0; i < ignoreDataSourceTypes.length; i++) {
+    for (var i = 0, l = ignoreDataSourceTypes.length; i < l; i++) {
       if (ignoreDataSourceTypes[i] === dataSource.type) {
         return false;
       }
@@ -47,37 +46,26 @@ Fliplet.DataSources.get({
     return true;
   });
 
-  Promise.all(filteredDataSources.map(function (dataSource) {
-    return Fliplet.DataSources.connect(dataSource.id).then(function (source) {
-      return source.find();
-    }).then(function (rows) {
-      dataSource.rows = rows.map(function (row) {
-        return row.data;
-      });
-      return Promise.resolve(dataSource);
-    });
-  })).then(function (dataSources) {
-    data.dataSources = dataSources;
-    var templateSource = $('template[name="dataSourceTemplate"]').html();
-    var template = Handlebars.compile(templateSource);
-    $dataSource.html(template(dataSources));
+  data.dataSources = filteredDataSources;
+  var templateSource = $('template[name="dataSourceTemplate"]').html();
+  var template = Handlebars.compile(templateSource);
+  $dataSource.html(template(dataSources));
 
-    // LOADS DATA SOURCE DATA
-    // NEEDS TO BE DONE HERE BECAUSE THE SELECT BOX NEEDS TO BE DYNAMIC UPDATED
-    if (data.dataSourceId) {
-      $dataSource.val(data.dataSourceId).trigger('change');
-      showColumnSelect();
-      $dataSortOrder.val(data.dataSortOrder);
-      $dataSortOrder.trigger('change');
-    } else {
-      $dataSource.trigger('change');
-    }
-    if ( data.dataSourceId && data.dataSourceColumn ) {
-      $dataColumns.val(data.dataSourceColumn).trigger('change');
-    }
+  // LOADS DATA SOURCE DATA
+  // NEEDS TO BE DONE HERE BECAUSE THE SELECT BOX NEEDS TO BE DYNAMIC UPDATED
+  if (data.dataSourceId) {
+    $dataSource.val(data.dataSourceId).trigger('change');
+    showColumnSelect();
+    $dataSortOrder.val(data.dataSortOrder);
+    $dataSortOrder.trigger('change');
+  } else {
+    $dataSource.trigger('change');
+  }
+  if ( data.dataSourceId && data.dataSourceColumn ) {
+    $dataColumns.val(data.dataSourceColumn).trigger('change');
+  }
 
-    initialised = true;
-  });
+  initialised = true;
 });
 
 // LOAD CHART SETTINGS
