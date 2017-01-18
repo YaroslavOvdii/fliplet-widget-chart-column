@@ -1,7 +1,10 @@
+window.ui = window.ui || {}
+ui.flipletCharts = {};
 function init(){
   Fliplet.Navigator.onReady().then(function(){
     $('[data-chart-column-id]').each(function (i, el) {
-      var data = Fliplet.Widget.getData( $(this).data('chart-column-id') );
+      var chartId = $(this).data('chart-column-id');
+      var data = Fliplet.Widget.getData( chartId );
       var $container = $(el);
       var refreshTimeout = 5000;
       // var updateDateFormat = 'MMMM Do YYYY, h:mm:ss a';
@@ -123,7 +126,7 @@ function init(){
 
       function refreshChart() {
         // Retrieve chart object
-        var chart = $container.data('chart-column');
+        var chart = ui.flipletCharts[chartId];
         // Update x-axis categories
         chart.xAxis[0].categories = data.columns;
         // Update values
@@ -215,7 +218,7 @@ function init(){
           }
         };
         // Create and save chart object
-        $container.data('chart-column', new Highcharts.Chart(chartOpt));
+        ui.flipletCharts[chartId] = new Highcharts.Chart(chartOpt);
       }
 
       refreshData().then(drawChart);
