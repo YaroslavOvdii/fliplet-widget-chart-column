@@ -5,7 +5,9 @@
   "icon": "img/icon.png",
   "tags": ["type:component", "category:charts"],
   "provider_only": false,
-  "references": [],
+  "references": [
+    "dataSourceId:dataSource"
+  ],
   "html_tag": "div",
   "interface": {
     "dependencies": [
