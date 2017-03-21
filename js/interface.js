@@ -11,7 +11,6 @@ var $dataSource = $('select#select-data-source');
 var $dataColumns = $('select#select-data-column');
 var $dataSortOrder = $('select#select-data-sort-order');
 var organizationId = Fliplet.Env.get('organizationId');
-var ignoreDataSourceTypes = ['menu'];
 var initialised = false;
 
 // Fired from Fliplet Studio when the external save button is clicked
@@ -37,16 +36,7 @@ Fliplet.Widget.onSaveRequest(function () {
 Fliplet.DataSources.get({
   organizationId: organizationId
 }).then(function (dataSources) {
-  var filteredDataSources = dataSources.filter(function (dataSource) {
-    for (var i = 0, l = ignoreDataSourceTypes.length; i < l; i++) {
-      if (ignoreDataSourceTypes[i] === dataSource.type) {
-        return false;
-      }
-    }
-    return true;
-  });
-
-  data.dataSources = filteredDataSources;
+  data.dataSources = dataSources;
   var templateSource = $('template[name="dataSourceTemplate"]').html();
   var template = Handlebars.compile(templateSource);
   $dataSource.html(template(dataSources));
