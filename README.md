@@ -1,1 +1,1 @@
-# Fliplet Poll Results Widget
+# Fliplet Column Chart Widget
