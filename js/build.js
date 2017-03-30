@@ -169,8 +169,8 @@ function init(){
           xAxis: {
             categories: data.columns,
             title: {
-              text: data.x_axix_title,
-              enabled: data.x_axix_title !== ''
+              text: data.x_axis_title,
+              enabled: data.x_axis_title !== ''
             },
             crosshair: true,
             gridLineWidth: 0
@@ -178,8 +178,8 @@ function init(){
           yAxis: {
             min: 0,
             title: {
-              text: data.y_axix_title,
-              enabled: data.y_axix_title !== ''
+              text: data.y_axis_title,
+              enabled: data.y_axis_title !== ''
             },
             labels: {
               enabled: false

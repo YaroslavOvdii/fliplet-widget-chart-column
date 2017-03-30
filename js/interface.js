@@ -1,8 +1,8 @@
 var data = Fliplet.Widget.getData() || {
   show_data_legend: true,
   show_data_values: true,
-  y_axix_title: '',
-  x_axix_title: '',
+  y_axis_title: '',
+  x_axis_title: '',
   show_total_entries: '',
   auto_refresh: ''
 };
@@ -23,8 +23,8 @@ Fliplet.Widget.onSaveRequest(function () {
     dataSortOrder: $dataSortOrder.find(':selected').val(),
     show_data_legend: $('#show_data_legend:checked').val() === "show",
     show_data_values: $('#show_data_values:checked').val() === "show",
-    y_axix_title: $('#yaxix_title').val(),
-    x_axix_title: $('#xaxix_title').val(),
+    y_axis_title: $('#yaxis_title').val(),
+    x_axis_title: $('#xaxis_title').val(),
     show_total_entries: $('#show_total_entries:checked').val() === "show",
     auto_refresh: $('#auto_refresh:checked').val() === "refresh"
   }).then(function () {
@@ -62,8 +62,8 @@ Fliplet.DataSources.get({
 if (data) {
   $('#show_data_legend').prop('checked', data.show_data_legend);
   $('#show_data_values').prop('checked', data.show_data_values);
-  $('#yaxix_title').val(data.y_axix_title);
-  $('#xaxix_title').val(data.x_axix_title);
+  $('#yaxis_title').val(data.y_axis_title);
+  $('#xaxis_title').val(data.x_axis_title);
   $('#show_total_entries').prop('checked', data.show_total_entries);
   $('#auto_refresh').prop('checked', data.auto_refresh);
 }
