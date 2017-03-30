@@ -1,4 +1,5 @@
 <div class="chart-column-wrapper" data-chart-column-id="{{id}}">
+  {{#if dataSourceId}}
     <div class="chart-column-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     <div class="container-fluid">
       <div class="row">
@@ -14,4 +15,11 @@
         {{/if}}
       </div>
     </div>
+  {{else}}
+    <div class="text-center text-muted">
+      <h1><i class="fa fa-cogs fa-2x"></i></h1>
+      <h3>Column Chart</h3>
+      <p>Start configuring your component and the chart will appear here.</p>
+    </div>
+  {{/if}}
 </div>

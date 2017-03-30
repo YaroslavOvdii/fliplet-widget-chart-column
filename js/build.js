@@ -74,7 +74,7 @@ function init(){
 
       function refreshData() {
         return Fliplet.DataSources.fetchWithOptions({
-          dataSourceId: data.dataSourceId,
+          dataSourceId: parseInt(data.dataSourceId, 10),
           columns: [data.dataSourceColumn]
         }).then(function(result){
           data.entries = [];

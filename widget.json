@@ -29,6 +29,7 @@
       "jquery",
       "moment",
       "bootstrap",
+      "highcharts",
       "font-awesome",
       "fliplet-core",
       "fliplet-datasources",
@@ -36,7 +37,6 @@
     ],
     "assets": [
       "css/build.css",
-      "js/highcharts.js",
       "js/build.js"
     ]
   }

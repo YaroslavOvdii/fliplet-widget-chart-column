@@ -18,7 +18,7 @@ Fliplet.Widget.onSaveRequest(function () {
   if (!initialised) return Fliplet.Widget.complete();
 
   Fliplet.Widget.save({
-    dataSourceId: $dataSource.val(),
+    dataSourceId: parseInt($dataSource.val(), 10),
     dataSourceColumn: $dataColumns.val(),
     dataSortOrder: $dataSortOrder.find(':selected').val(),
     show_data_legend: ($('#show_data_legend:checked').val() === "show" ? true : false),
