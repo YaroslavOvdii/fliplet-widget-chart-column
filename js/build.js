@@ -149,6 +149,7 @@ function init(){
         var chartOpt = {
           chart: {
             type: 'column',
+            zoomType: 'xy',
             renderTo: $container.find('.chart-column-container')[0],
             events: {
               load: function(){
@@ -169,7 +170,7 @@ function init(){
             categories: data.columns,
             title: {
               text: data.x_axix_title,
-              enabled: (data.x_axix_title !== '' ? true : false)
+              enabled: data.x_axix_title !== ''
             },
             crosshair: true,
             gridLineWidth: 0
@@ -178,7 +179,7 @@ function init(){
             min: 0,
             title: {
               text: data.y_axix_title,
-              enabled: (data.y_axix_title !== '' ? true : false)
+              enabled: data.y_axix_title !== ''
             },
             labels: {
               enabled: false

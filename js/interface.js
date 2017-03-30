@@ -21,12 +21,12 @@ Fliplet.Widget.onSaveRequest(function () {
     dataSourceId: parseInt($dataSource.val(), 10),
     dataSourceColumn: $dataColumns.val(),
     dataSortOrder: $dataSortOrder.find(':selected').val(),
-    show_data_legend: ($('#show_data_legend:checked').val() === "show" ? true : false),
-    show_data_values: ($('#show_data_values:checked').val() === "show" ? true : false),
+    show_data_legend: $('#show_data_legend:checked').val() === "show",
+    show_data_values: $('#show_data_values:checked').val() === "show",
     y_axix_title: $('#yaxix_title').val(),
     x_axix_title: $('#xaxix_title').val(),
-    show_total_entries: ($('#show_total_entries:checked').val() === "show" ? true : false),
-    auto_refresh: ($('#auto_refresh:checked').val() === "refresh" ? true : false)
+    show_total_entries: $('#show_total_entries:checked').val() === "show",
+    auto_refresh: $('#auto_refresh:checked').val() === "refresh"
   }).then(function () {
     Fliplet.Widget.complete();
   });
