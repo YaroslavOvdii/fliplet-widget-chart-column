@@ -138,7 +138,7 @@ function init(){
         setTimeout(function(){
           refreshData().then(function(){
             refreshChart();
-            if (data.auto_refresh) {
+            if (data.autoRefresh) {
               getLatestData();
             }
           });
@@ -154,7 +154,7 @@ function init(){
             events: {
               load: function(){
                 refreshChartInfo();
-                if (data.auto_refresh) {
+                if (data.autoRefresh) {
                   getLatestData();
                 }
               }
@@ -169,8 +169,8 @@ function init(){
           xAxis: {
             categories: data.columns,
             title: {
-              text: data.x_axis_title,
-              enabled: data.x_axis_title !== ''
+              text: data.xAxisTitle,
+              enabled: data.xAxisTitle !== ''
             },
             crosshair: true,
             gridLineWidth: 0
@@ -178,8 +178,8 @@ function init(){
           yAxis: {
             min: 0,
             title: {
-              text: data.y_axis_title,
-              enabled: data.y_axis_title !== ''
+              text: data.yAxisTitle,
+              enabled: data.yAxisTitle !== ''
             },
             labels: {
               enabled: false
@@ -187,7 +187,7 @@ function init(){
             gridLineWidth: 0
           },
           tooltip: {
-            enabled: !data.show_data_values,
+            enabled: !data.showDataValues,
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: [
               '<tr><td style="color:{series.color};padding:0">{series.name}: </td>',
@@ -208,14 +208,14 @@ function init(){
             data: data.values,
             color: '#3276b1',
             dataLabels: {
-              enabled: data.show_data_values,
+              enabled: data.showDataValues,
               color: '#333333',
               align: 'center',
               format: '{point.y}'
             }
           }],
           legend: {
-            enabled: data.show_data_legend
+            enabled: data.showDataLegend
           }
         };
         // Create and save chart object

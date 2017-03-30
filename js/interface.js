@@ -1,10 +1,10 @@
 var data = Fliplet.Widget.getData() || {
-  show_data_legend: true,
-  show_data_values: true,
-  y_axis_title: '',
-  x_axis_title: '',
-  show_total_entries: '',
-  auto_refresh: ''
+  showDataLegend: undefined,
+  showDataValues: undefined,
+  yAxisTitle: '',
+  xAxisTitle: '',
+  showTotalEntries: undefined,
+  autoRefresh: undefined
 };
 
 var $dataSource = $('select#select-data-source');
@@ -21,12 +21,12 @@ Fliplet.Widget.onSaveRequest(function () {
     dataSourceId: parseInt($dataSource.val(), 10),
     dataSourceColumn: $dataColumns.val(),
     dataSortOrder: $dataSortOrder.find(':selected').val(),
-    show_data_legend: $('#show_data_legend:checked').val() === "show",
-    show_data_values: $('#show_data_values:checked').val() === "show",
-    y_axis_title: $('#yaxis_title').val(),
-    x_axis_title: $('#xaxis_title').val(),
-    show_total_entries: $('#show_total_entries:checked').val() === "show",
-    auto_refresh: $('#auto_refresh:checked').val() === "refresh"
+    showDataLegend: $('#show_data_legend:checked').val() === "show",
+    showDataValues: $('#show_data_values:checked').val() === "show",
+    yAxisTitle: $('#y_axis_title').val(),
+    xAxisTitle: $('#x_axis_title').val(),
+    showTotalEntries: $('#show_total_entries:checked').val() === "show",
+    autoRefresh: $('#auto_refresh:checked').val() === "refresh"
   }).then(function () {
     Fliplet.Widget.complete();
   });
@@ -60,12 +60,12 @@ Fliplet.DataSources.get({
 
 // LOAD CHART SETTINGS
 if (data) {
-  $('#show_data_legend').prop('checked', data.show_data_legend);
-  $('#show_data_values').prop('checked', data.show_data_values);
-  $('#yaxis_title').val(data.y_axis_title);
-  $('#xaxis_title').val(data.x_axis_title);
-  $('#show_total_entries').prop('checked', data.show_total_entries);
-  $('#auto_refresh').prop('checked', data.auto_refresh);
+  $('#show_data_legend').prop('checked', data.showDataLegend);
+  $('#show_data_values').prop('checked', data.showDataValues);
+  $('#y_axis_title').val(data.yAxisTitle);
+  $('#x_axis_title').val(data.xAxisTitle);
+  $('#show_total_entries').prop('checked', data.showTotalEntries);
+  $('#auto_refresh').prop('checked', data.autoRefresh);
 }
 
 
