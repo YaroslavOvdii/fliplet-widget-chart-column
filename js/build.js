@@ -94,7 +94,7 @@ function init(){
               break;
             case 1:
               result.dataSourceEntries.forEach(function(row) {
-                var value = row[data.dataSourceColumn];
+                var value = row[data.dataSourceQuery.columns.column];
                 value = $.trim(value);
                 data.entries.push(value);
 
@@ -229,7 +229,7 @@ function init(){
             }
           },
           series: [{
-            name: data.dataSourceColumn,
+            name: data.dataSourceQuery.columns.column,
             data: data.values,
             color: '#3276b1',
             dataLabels: {
