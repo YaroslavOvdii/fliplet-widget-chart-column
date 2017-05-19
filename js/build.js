@@ -1,7 +1,7 @@
 window.ui = window.ui || {}
 ui.flipletCharts = {};
 function init(){
-  Fliplet.Navigator.onReady().then(function(){
+  Fliplet().then(function(){
     $('[data-chart-column-id]').each(function (i, el) {
       var chartId = $(this).data('chart-column-id');
       var data = Fliplet.Widget.getData( chartId );
