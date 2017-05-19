@@ -13,6 +13,7 @@ Fliplet().then(function(){
       data.totalEntries = 0;
       data.columns = [];
       data.values = [];
+      data.name = '';
     }
 
     function sortData() {
@@ -82,6 +83,7 @@ Fliplet().then(function(){
         switch (data.dataSourceQuery.selectedModeIdx) {
           case 0:
           default:
+            data.name = data.dataSourceQuery.columns.value;
             result.dataSourceEntries.forEach(function(row, i) {
               if (!row[data.dataSourceQuery.columns.category] && !row[data.dataSourceQuery.columns.value]) {
                 return;
@@ -92,6 +94,7 @@ Fliplet().then(function(){
             });
             break;
           case 1:
+          data.name = data.dataSourceQuery.columns.column;
             result.dataSourceEntries.forEach(function(row) {
               var value = row[data.dataSourceQuery.columns.column];
               value = $.trim(value);
@@ -228,7 +231,7 @@ Fliplet().then(function(){
           }
         },
         series: [{
-          name: data.dataSourceQuery.columns.column,
+          name: data.name,
           data: data.values,
           color: '#3276b1',
           dataLabels: {
