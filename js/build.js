@@ -94,7 +94,7 @@ Fliplet().then(function(){
             });
             break;
           case 1:
-          data.name = data.dataSourceQuery.columns.column;
+          data.name = 'Count of ' + data.dataSourceQuery.columns.column;
             result.dataSourceEntries.forEach(function(row) {
               var value = row[data.dataSourceQuery.columns.column];
               value = $.trim(value);
