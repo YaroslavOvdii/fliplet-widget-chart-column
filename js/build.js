@@ -84,10 +84,13 @@ function init(){
             case 0:
             default:
               result.dataSourceEntries.forEach(function(row, i) {
+                if (!row[data.dataSourceQuery.columns.category] && !row[data.dataSourceQuery.columns.value]) {
+                  return;
+                }
                 data.columns.push(row[data.dataSourceQuery.columns.category] || 'Category ' + (i+1));
                 data.values.push(parseInt(row[data.dataSourceQuery.columns.value]) || 0);
+                data.totalEntries++;
               });
-              data.totalEntries = result.dataSourceEntries.length;
               break;
             case 1:
               result.dataSourceEntries.forEach(function(row) {
