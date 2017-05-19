@@ -7,7 +7,6 @@ function init(){
       var data = Fliplet.Widget.getData( chartId );
       var $container = $(el);
       var refreshTimeout = 5000;
-      // var updateDateFormat = 'MMMM Do YYYY, h:mm:ss a';
       var updateDateFormat = 'hh:mm:ss a';
 
       function resetData() {
@@ -73,45 +72,54 @@ function init(){
       }
 
       function refreshData() {
-        return Fliplet.DataSources.fetchWithOptions({
-          dataSourceId: parseInt(data.dataSourceId, 10),
-          columns: [data.dataSourceColumn]
-        }).then(function(result){
+        return Fliplet.DataSources.fetchWithOptions(data.dataSourceQuery).then(function(result){
           data.entries = [];
           data.columns = [];
           data.values = [];
           data.totalEntries = 0;
-          if (result.dataSource.columns.indexOf(data.dataSourceColumn) < 0) {
+          if (!result.dataSource.columns.length) {
             return Promise.resolve();
           }
-          result.dataSourceEntries.forEach(function(row) {
-            var value = row[data.dataSourceColumn];
-            value = $.trim(value);
-            data.entries.push(value);
+          switch (data.dataSourceQuery.selectedModeIdx) {
+            case 0:
+            default:
+              result.dataSourceEntries.forEach(function(row, i) {
+                data.columns.push(row[data.dataSourceQuery.columns.category] || 'Category ' + (i+1));
+                data.values.push(parseInt(row[data.dataSourceQuery.columns.value]) || 0);
+              });
+              data.totalEntries = result.dataSourceEntries.length;
+              break;
+            case 1:
+              result.dataSourceEntries.forEach(function(row) {
+                var value = row[data.dataSourceColumn];
+                value = $.trim(value);
+                data.entries.push(value);
 
-            if (value.constructor.name === 'Array') {
-              // Value is an array
-              value.forEach(function(elem) {
-                if ( data.columns.indexOf(elem) === -1 ) {
-                  data.columns.push(elem);
-                  data.values[data.columns.indexOf(elem)] = 1;
+                if (value.constructor.name === 'Array') {
+                  // Value is an array
+                  value.forEach(function(elem) {
+                    if ( data.columns.indexOf(elem) === -1 ) {
+                      data.columns.push(elem);
+                      data.values[data.columns.indexOf(elem)] = 1;
+                    } else {
+                      data.values[data.columns.indexOf(elem)]++;
+                    }
+                  });
                 } else {
-                  data.values[data.columns.indexOf(elem)]++;
+                  // Value is not an array
+                  if ( data.columns.indexOf(value) === -1 ) {
+                    data.columns.push(value);
+                    data.values[data.columns.indexOf(value)] = 1;
+                  } else {
+                    data.values[data.columns.indexOf(value)]++;
+                  }
                 }
               });
-            } else {
-              // Value is not an array
-              if ( data.columns.indexOf(value) === -1 ) {
-                data.columns.push(value);
-                data.values[data.columns.indexOf(value)] = 1;
-              } else {
-                data.values[data.columns.indexOf(value)]++;
-              }
-            }
-          });
-          sortData();
-          // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
-          data.totalEntries = data.entries.length;
+              sortData();
+              // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
+              data.totalEntries = data.entries.length;
+              break;
+          }
 
           return Promise.resolve();
         });
