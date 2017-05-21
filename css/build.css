@@ -1,9 +1,9 @@
 .chart-column-updatedAt,
 .chart-column-total {
-    text-align: center;
-    color: #c2c2c2;
+  text-align: center;
+  color: #c2c2c2;
 }
 .chart-column-updatedAt > .updatedAt,
 .chart-column-total > .total {
-    color: #888888;
+  color: #888888;
 }
