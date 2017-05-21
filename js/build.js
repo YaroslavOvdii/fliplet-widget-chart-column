@@ -243,6 +243,9 @@ Fliplet().then(function(){
         }],
         legend: {
           enabled: data.showDataLegend
+        },
+        credits: {
+          enabled: false
         }
       };
       // Create and save chart object
