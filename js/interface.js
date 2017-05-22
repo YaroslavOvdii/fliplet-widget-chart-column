@@ -108,7 +108,7 @@ if (data) {
   $('#x_axis_title').val(data.xAxisTitle);
   $('#show_total_entries').prop('checked', data.showTotalEntries);
   $('#auto_refresh').prop('checked', data.autoRefresh);
-  if (data.dataSourceQuery.selectedModeIdx === 1) {
+  if (data.dataSourceQuery && data.dataSourceQuery.selectedModeIdx === 1) {
     $('.column-sort-order').removeClass('hidden');
   }
 }
