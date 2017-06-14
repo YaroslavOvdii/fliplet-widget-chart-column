@@ -74,6 +74,12 @@
       }
 
       function refreshData() {
+        if (!data.dataSourceQuery && !data.dataSourceId) {
+          data.columns = ['A','B','C'];
+          data.values = [3, 1, 2];
+          data.totalEntries = 6;
+          return Promise.resolve()
+        }
         return Fliplet.DataSources.fetchWithOptions(data.dataSourceQuery).then(function(result){
           data.entries = [];
           data.columns = [];
@@ -129,6 +135,8 @@
           }
 
           return Promise.resolve();
+        }).catch(function(error){
+          return Promise.reject(error);
         });
       }
 
@@ -175,7 +183,7 @@
           chart: {
             type: 'column',
             zoomType: 'xy',
-            renderTo: $container.find('.chart-column-container')[0],
+            renderTo: $container.find('.chart-container')[0],
             style: {
               fontFamily: (Fliplet.Themes && Fliplet.Themes.Current.get('bodyFontFamily')) || 'sans-serif'
             },
@@ -254,7 +262,9 @@
         ui.flipletCharts[chartId] = new Highcharts.Chart(chartOpt);
       }
 
-      refreshData().then(drawChart);
+      refreshData().then(drawChart).catch(function(error){
+        console.error(error);
+      });
     });
   }
 
