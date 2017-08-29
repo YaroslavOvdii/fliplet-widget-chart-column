@@ -91,6 +91,7 @@
           switch (data.dataSourceQuery.selectedModeIdx) {
             case 0:
             default:
+              // Plot the data as is
               data.name = data.dataSourceQuery.columns.value;
               result.dataSourceEntries.forEach(function(row, i) {
                 if (!row[data.dataSourceQuery.columns.category] && !row[data.dataSourceQuery.columns.value]) {
@@ -102,36 +103,43 @@
               });
               break;
             case 1:
-            data.name = 'Count of ' + data.dataSourceQuery.columns.column;
-              result.dataSourceEntries.forEach(function(row) {
-                var value = row[data.dataSourceQuery.columns.column];
-                value = $.trim(value);
-                data.entries.push(value);
+              // Summarise data
+              data.name = 'Count of ' + data.dataSourceQuery.columns.column;
+                result.dataSourceEntries.forEach(function(row) {
+                  var value = row[data.dataSourceQuery.columns.column];
 
-                if (value.constructor.name === 'Array') {
-                  // Value is an array
-                  value.forEach(function(elem) {
-                    if ( data.columns.indexOf(elem) === -1 ) {
-                      data.columns.push(elem);
-                      data.values[data.columns.indexOf(elem)] = 1;
-                    } else {
-                      data.values[data.columns.indexOf(elem)]++;
-                    }
-                  });
-                } else {
-                  // Value is not an array
-                  if ( data.columns.indexOf(value) === -1 ) {
-                    data.columns.push(value);
-                    data.values[data.columns.indexOf(value)] = 1;
+                  if (value.constructor.name === 'Array') {
+                    // Value is an array
+                    value.forEach(function(elem) {
+                      if (typeof elem === 'string') {
+                        elem = $.trim(elem);
+                      }
+                      data.entries.push(elem);
+                      if ( data.columns.indexOf(elem) === -1 ) {
+                        data.columns.push(elem);
+                        data.values[data.columns.indexOf(elem)] = 1;
+                      } else {
+                        data.values[data.columns.indexOf(elem)]++;
+                      }
+                    });
                   } else {
-                    data.values[data.columns.indexOf(value)]++;
+                    // Value is not an array
+                    if (typeof value === 'string') {
+                      value = $.trim(value);
+                    }
+                    data.entries.push(value);
+                    if ( data.columns.indexOf(value) === -1 ) {
+                      data.columns.push(value);
+                      data.values[data.columns.indexOf(value)] = 1;
+                    } else {
+                      data.values[data.columns.indexOf(value)]++;
+                    }
                   }
-                }
-              });
-              sortData();
-              // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
-              data.totalEntries = data.entries.length;
-              break;
+                });
+                sortData();
+                // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
+                data.totalEntries = data.entries.length;
+                break;
           }
 
           return Promise.resolve();
