@@ -108,7 +108,7 @@
                 result.dataSourceEntries.forEach(function(row) {
                   var value = row[data.dataSourceQuery.columns.column];
 
-                  if (value.constructor.name === 'Array') {
+                  if (Array.isArray(value)) {
                     // Value is an array
                     value.forEach(function(elem) {
                       if (typeof elem === 'string') {
