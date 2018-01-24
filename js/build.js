@@ -260,7 +260,10 @@
             }
           }],
           legend: {
-            enabled: data.showDataLegend
+            enabled: data.showDataLegend,
+            itemStyle: {
+              width: '100%'
+            }
           },
           credits: {
             enabled: false
