@@ -267,6 +267,22 @@
               color: '#333333',
               align: 'center',
               format: '{point.y}'
+            },
+            events: {
+              click: function () {
+                Fliplet.Analytics.trackEvent({
+                  category: 'chart',
+                  action: 'data_point_interact',
+                  title: 'column'
+                });
+              },
+              legendItemClick: function () {
+                Fliplet.Analytics.trackEvent({
+                  category: 'chart',
+                  action: 'legend_filter',
+                  title: 'column'
+                });
+              }
             }
           }],
           legend: {
