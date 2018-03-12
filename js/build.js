@@ -273,14 +273,14 @@
                 Fliplet.Analytics.trackEvent({
                   category: 'chart',
                   action: 'data_point_interact',
-                  title: 'column'
+                  label: 'column'
                 });
               },
               legendItemClick: function () {
                 Fliplet.Analytics.trackEvent({
                   category: 'chart',
                   action: 'legend_filter',
-                  title: 'column'
+                  label: 'column'
                 });
               }
             }
