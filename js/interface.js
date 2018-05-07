@@ -129,8 +129,8 @@ function attachObservers() {
       showDataValues: $('#show_data_values:checked').val() === "show",
       yAxisTitle: $('#y_axis_title').val(),
       xAxisTitle: $('#x_axis_title').val(),
-      showTotalEntries: $('#show_total_entries:checked').val() === "show",
-      autoRefresh: $('#auto_refresh:checked').val() === "refresh"
+      showTotalEntries: $('#show_total_entries').is(':checked'),
+      autoRefresh: $('#auto_refresh').is(':checked')
     }).then(function () {
       Fliplet.Widget.complete();
       Fliplet.Studio.emit('reload-page-preview');
