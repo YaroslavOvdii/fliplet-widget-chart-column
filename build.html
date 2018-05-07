@@ -1,6 +1,7 @@
 <div class="chart-column-wrapper" data-chart-column-id="{{id}}">
-  {{#or dataSourceQuery.dataSourceId dataSourceId}}
+  {{#if dataSourceQuery.dataSourceId}}
     <div class="chart-container"></div>
+    {{#or showTotalEntries autoRefresh}}
     <div class="container-fluid">
       <div class="row">
         {{#if showTotalEntries}}
@@ -15,15 +16,42 @@
         {{/if}}
       </div>
     </div>
+    {{/or}}
   {{else}}
     <div class="text-center text-muted">
       <div class="chart-placeholder">
-        <div class="chart-container"}></div>
+        <div class="chart-container"></div>
         <div class="chart-placeholder-text">
           <h3>Column Chart</h3>
           <p>Start configuring your component and the chart will appear here.</p>
         </div>
       </div>
     </div>
-  {{/or}}
+  {{/if}}
+  {{#and chartHeightSm chartHeightMd}}
+  <style>
+  .chart-column-wrapper[data-chart-column-id="{{id}}"] .chart-container {
+    height: {{chartHeightSm}};
+  }
+
+  @media screen and (min-width: 640px) {
+    .chart-column-wrapper[data-chart-column-id="{{id}}"] .chart-container {
+      height: {{chartHeightMd}};
+    }
+  }
+  </style>
+  <script type="text/html" class="chart-styles">
+    <style>
+    .chart-column-wrapper[data-chart-column-id="{{id}}"] .chart-container {
+      height: {{chartHeightSm}};
+    }
+
+    @media screen and (min-width: 640px) {
+      .chart-column-wrapper[data-chart-column-id="{{id}}"] .chart-container {
+        height: {{chartHeightMd}};
+      }
+    }
+    </style>
+  </script>
+  {{/and}}
 </div>
