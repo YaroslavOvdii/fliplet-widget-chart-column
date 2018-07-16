@@ -241,6 +241,11 @@
             },
             gridLineWidth: 0
           },
+          navigation: {
+            buttonOptions: {
+              enabled: false
+            }
+          },
           tooltip: {
             enabled: !data.showDataValues,
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
