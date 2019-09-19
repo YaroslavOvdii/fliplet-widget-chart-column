@@ -86,7 +86,6 @@ var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
 
 // Ensure chart heights have a correct default & units
 function validateChartHeight(val, size) {
-  debugger;
   if (typeof val !== 'string') {
     val = val.toString() || '';
   }
