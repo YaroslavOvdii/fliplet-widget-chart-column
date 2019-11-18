@@ -117,4 +117,7 @@ if (data) {
   if (data.dataSourceQuery && data.dataSourceQuery.selectedModeIdx === 1) {
     $('.column-sort-order').removeClass('hidden');
   }
+  if (data.dataSortOrder) {
+    $('#select-data-sort-order').val(data.dataSortOrder);
+  }
 }
