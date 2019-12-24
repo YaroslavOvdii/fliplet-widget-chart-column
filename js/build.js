@@ -4,10 +4,9 @@
   ui.flipletCharts = ui.flipletCharts || {};
 
   function init() {
-    $('[data-chart-column-id]').each(function (i, el) {
-      var chartId = $(this).data('chart-column-id');
-      var data = Fliplet.Widget.getData(chartId);
-      var $container = $(el);
+    Fliplet.Widget.instance('chart-column', function (data) {
+      var chartId = data.id;
+      var $container = $(this);
       var refreshTimeout = 5000;
       var updateDateFormat = 'hh:mm:ss a';
 
@@ -37,20 +36,20 @@
           case 'alphabetical':
             objArr.sort(function (a, b) {
               var keyA = a.column,
-                  keyB = b.column;
+                keyB = b.column;
               // Compare the 2 dates
-              if(keyA < keyB) return (sortOrder === 'asc' ? -1 : 1);
-              if(keyA > keyB) return (sortOrder === 'asc' ? 1 : -1);
+              if (keyA < keyB) return (sortOrder === 'asc' ? -1 : 1);
+              if (keyA > keyB) return (sortOrder === 'asc' ? 1 : -1);
               return 0;
             });
             break;
           case 'timestamp':
             objArr.sort(function (a, b) {
               var keyA = moment(a.column),
-                  keyB = moment(b.column);
+                keyB = moment(b.column);
               // Compare the 2 dates
-              if(keyA.isBefore(keyB)) return (sortOrder === 'asc' ? -1 : 1);
-              if(keyA.isAfter(keyB)) return (sortOrder === 'asc' ? 1 : -1);
+              if (keyA.isBefore(keyB)) return (sortOrder === 'asc' ? -1 : 1);
+              if (keyA.isAfter(keyB)) return (sortOrder === 'asc' ? 1 : -1);
               return 0;
             });
             break;
@@ -58,10 +57,10 @@
           default:
             objArr.sort(function (a, b) {
               var valueA = a.value,
-                  valueB = b.value;
+                valueB = b.value;
               // Compare the 2 dates
-              if(valueA < valueB) return (sortOrder === 'asc' ? -1 : 1);
-              if(valueA > valueB) return (sortOrder === 'asc' ? 1 : -1);
+              if (valueA < valueB) return (sortOrder === 'asc' ? -1 : 1);
+              if (valueA > valueB) return (sortOrder === 'asc' ? 1 : -1);
               return 0;
             });
             break;
@@ -76,7 +75,7 @@
 
       function refreshData() {
         if (typeof data.dataSourceQuery !== 'object') {
-          data.columns = ['A','B','C'];
+          data.columns = ['A', 'B', 'C'];
           data.values = [3, 1, 2];
           data.totalEntries = 6;
           return Promise.resolve()
@@ -105,7 +104,7 @@
                       if (!row[data.dataSourceQuery.columns.category] && !row[data.dataSourceQuery.columns.value]) {
                         return;
                       }
-                      data.columns.push(row[data.dataSourceQuery.columns.category] || 'Category ' + (i+1));
+                      data.columns.push(row[data.dataSourceQuery.columns.category] || 'Category ' + (i + 1));
                       data.values.push(parseInt(row[data.dataSourceQuery.columns.value]) || 0);
                       data.totalEntries++;
                     });
@@ -113,51 +112,51 @@
                   case 1:
                     // Summarise data
                     data.name = 'Count of ' + data.dataSourceQuery.columns.column;
-                      result.dataSourceEntries.forEach(function (row) {
-                        var value = row[data.dataSourceQuery.columns.column];
+                    result.dataSourceEntries.forEach(function (row) {
+                      var value = row[data.dataSourceQuery.columns.column];
 
-                        if (Array.isArray(value)) {
-                          // Value is an array
-                          value.forEach(function (elem) {
-                            if (typeof elem === 'string') {
-                              elem = $.trim(elem);
-                            }
-
-                            if (!value) {
-                              return;
-                            }
-
-                            data.entries.push(elem);
-                            if ( data.columns.indexOf(elem) === -1 ) {
-                              data.columns.push(elem);
-                              data.values[data.columns.indexOf(elem)] = 1;
-                            } else {
-                              data.values[data.columns.indexOf(elem)]++;
-                            }
-                          });
-                        } else {
-                          // Value is not an array
-                          if (typeof value === 'string') {
-                            value = $.trim(value);
+                      if (Array.isArray(value)) {
+                        // Value is an array
+                        value.forEach(function (elem) {
+                          if (typeof elem === 'string') {
+                            elem = $.trim(elem);
                           }
 
                           if (!value) {
                             return;
                           }
 
-                          data.entries.push(value);
-                          if ( data.columns.indexOf(value) === -1 ) {
-                            data.columns.push(value);
-                            data.values[data.columns.indexOf(value)] = 1;
+                          data.entries.push(elem);
+                          if (data.columns.indexOf(elem) === -1) {
+                            data.columns.push(elem);
+                            data.values[data.columns.indexOf(elem)] = 1;
                           } else {
-                            data.values[data.columns.indexOf(value)]++;
+                            data.values[data.columns.indexOf(elem)]++;
                           }
+                        });
+                      } else {
+                        // Value is not an array
+                        if (typeof value === 'string') {
+                          value = $.trim(value);
                         }
-                      });
-                      sortData();
-                      // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
-                      data.totalEntries = data.entries.length;
-                      break;
+
+                        if (!value) {
+                          return;
+                        }
+
+                        data.entries.push(value);
+                        if (data.columns.indexOf(value) === -1) {
+                          data.columns.push(value);
+                          data.values[data.columns.indexOf(value)] = 1;
+                        } else {
+                          data.values[data.columns.indexOf(value)]++;
+                        }
+                      }
+                    });
+                    sortData();
+                    // SAVES THE TOTAL NUMBER OF ROW/ENTRIES
+                    data.totalEntries = data.entries.length;
+                    break;
                 }
 
                 return Promise.resolve();
@@ -201,11 +200,11 @@
           '#00abd1', '#ed9119', '#7D4B79', '#F05865', '#36344C',
           '#474975', '#8D8EA6', '#FF5722', '#009688', '#E91E63'
         ];
-        colors.forEach(function eachColor (color, index) {
+        colors.forEach(function eachColor(color, index) {
           if (!Fliplet.Themes) {
             return;
           }
-          colors[index] = Fliplet.Themes.Current.get('chartColor'+(index+1)) || color;
+          colors[index] = Fliplet.Themes.Current.get('chartColor' + (index + 1)) || color;
         });
         var chartOpt = {
           chart: {
@@ -332,7 +331,9 @@
   }
 
   Fliplet().then(function () {
-    var debounceLoad = _.debounce(init, 500, { leading: true });
+    var debounceLoad = _.debounce(init, 500, {
+      leading: true
+    });
     Fliplet.Studio.onEvent(function (event) {
       if (event.detail.event === 'reload-widget-instance') {
         debounceLoad();
