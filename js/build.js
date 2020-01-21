@@ -152,7 +152,7 @@
                               elem = $.trim(elem);
                             }
 
-                            if (!value) {
+                            if (!elem) {
                               return;
                             }
 
