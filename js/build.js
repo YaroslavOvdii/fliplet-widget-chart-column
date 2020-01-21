@@ -152,7 +152,7 @@
                               elem = $.trim(elem);
                             }
 
-                            if (!value) {
+                            if (!elem) {
                               return;
                             }
 
@@ -262,6 +262,7 @@
                 }
               },
               render: function () {
+                ui.flipletCharts[chartId] = this;
                 Fliplet.Hooks.run('afterChartRender', {
                   chart: ui.flipletCharts[chartId],
                   chartOptions: chartOpt,
@@ -366,7 +367,7 @@
           type: 'column',
           config: data
         }).then(function () {
-          ui.flipletCharts[chartId] = new Highcharts.Chart(chartOpt);
+          new Highcharts.Chart(chartOpt);
         });
       }
 
