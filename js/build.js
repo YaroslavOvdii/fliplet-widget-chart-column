@@ -236,138 +236,145 @@
       }
 
       function drawChart() {
-        var colors = [
-          '#00abd1', '#ed9119', '#7D4B79', '#F05865', '#36344C',
-          '#474975', '#8D8EA6', '#FF5722', '#009688', '#E91E63'
-        ];
-        colors.forEach(function eachColor (color, index) {
-          if (!Fliplet.Themes) {
-            return;
-          }
-          colors[index] = Fliplet.Themes.Current.get('chartColor'+(index+1)) || color;
-        });
-        var chartOpt = {
-          chart: {
-            type: 'column',
-            zoomType: 'xy',
-            renderTo: $container.find('.chart-container')[0],
-            style: {
-              fontFamily: (Fliplet.Themes && Fliplet.Themes.Current.get('bodyFontFamily')) || 'sans-serif'
-            },
-            events: {
-              load: function () {
-                refreshChartInfo();
-                if (data.autoRefresh) {
-                  getLatestData();
+        return new Promise(function (resolve, reject) {
+          var colors = [
+            '#00abd1', '#ed9119', '#7D4B79', '#F05865', '#36344C',
+            '#474975', '#8D8EA6', '#FF5722', '#009688', '#E91E63'
+          ];
+          colors.forEach(function eachColor (color, index) {
+            if (!Fliplet.Themes) {
+              return;
+            }
+            colors[index] = Fliplet.Themes.Current.get('chartColor'+(index+1)) || color;
+          });
+          var chartOpt = {
+            chart: {
+              type: 'column',
+              zoomType: 'xy',
+              renderTo: $container.find('.chart-container')[0],
+              style: {
+                fontFamily: (Fliplet.Themes && Fliplet.Themes.Current.get('bodyFontFamily')) || 'sans-serif'
+              },
+              events: {
+                load: function () {
+                  refreshChartInfo();
+                  if (data.autoRefresh) {
+                    getLatestData();
+                  }
+                },
+                render: function () {
+                  ui.flipletCharts[chartId] = this;
+                  Fliplet.Hooks.run('afterChartRender', {
+                    chart: ui.flipletCharts[chartId],
+                    chartOptions: chartOpt,
+                    id: data.id,
+                    uuid: data.uuid,
+                    type: 'column',
+                    config: data
+                  });
+                  resolve(this);
                 }
-              },
-              render: function () {
-                ui.flipletCharts[chartId] = this;
-                Fliplet.Hooks.run('afterChartRender', {
-                  chart: ui.flipletCharts[chartId],
-                  chartOptions: chartOpt,
-                  id: data.id,
-                  uuid: data.uuid,
-                  type: 'column',
-                  config: data
-                });
               }
-            }
-          },
-          colors: colors,
-          title: {
-            text: ''
-          },
-          subtitle: {
-            text: ''
-          },
-          xAxis: {
-            categories: data.columns,
+            },
+            colors: colors,
             title: {
-              text: data.xAxisTitle,
-              enabled: data.xAxisTitle !== ''
+              text: ''
             },
-            crosshair: true,
-            gridLineWidth: 0
-          },
-          yAxis: {
-            min: 0,
-            title: {
-              text: data.yAxisTitle,
-              enabled: data.yAxisTitle !== ''
+            subtitle: {
+              text: ''
             },
-            labels: {
-              enabled: false
-            },
-            gridLineWidth: 0
-          },
-          navigation: {
-            buttonOptions: {
-              enabled: false
-            }
-          },
-          tooltip: {
-            enabled: !data.showDataValues,
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: [
-              '<tr><td style="color:{series.color};padding:0">{series.name}: </td>',
-              '<td style="padding:0"><b>{point.y}</b></td></tr>'
-            ].join(''),
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-          },
-          plotOptions: {
-            column: {
-              pointPadding: 0.2,
-              borderWidth: 0
-            }
-          },
-          series: [{
-            name: data.name,
-            data: data.values,
-            dataLabels: {
-              enabled: data.showDataValues,
-              color: '#333333',
-              align: 'center',
-              format: '{point.y}'
-            },
-            events: {
-              click: function () {
-                Fliplet.Analytics.trackEvent({
-                  category: 'chart',
-                  action: 'data_point_interact',
-                  label: 'column'
-                });
+            xAxis: {
+              categories: data.columns,
+              title: {
+                text: data.xAxisTitle,
+                enabled: data.xAxisTitle !== ''
               },
-              legendItemClick: function () {
-                Fliplet.Analytics.trackEvent({
-                  category: 'chart',
-                  action: 'legend_filter',
-                  label: 'column'
-                });
+              crosshair: true,
+              gridLineWidth: 0
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: data.yAxisTitle,
+                enabled: data.yAxisTitle !== ''
+              },
+              labels: {
+                enabled: false
+              },
+              gridLineWidth: 0
+            },
+            navigation: {
+              buttonOptions: {
+                enabled: false
               }
+            },
+            tooltip: {
+              enabled: !data.showDataValues,
+              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+              pointFormat: [
+                '<tr><td style="color:{series.color};padding:0">{series.name}: </td>',
+                '<td style="padding:0"><b>{point.y}</b></td></tr>'
+              ].join(''),
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+            },
+            plotOptions: {
+              column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+              }
+            },
+            series: [{
+              name: data.name,
+              data: data.values,
+              dataLabels: {
+                enabled: data.showDataValues,
+                color: '#333333',
+                align: 'center',
+                format: '{point.y}'
+              },
+              events: {
+                click: function () {
+                  Fliplet.Analytics.trackEvent({
+                    category: 'chart',
+                    action: 'data_point_interact',
+                    label: 'column'
+                  });
+                },
+                legendItemClick: function () {
+                  Fliplet.Analytics.trackEvent({
+                    category: 'chart',
+                    action: 'legend_filter',
+                    label: 'column'
+                  });
+                }
+              }
+            }],
+            legend: {
+              enabled: data.showDataLegend,
+              itemStyle: {
+                width: '100%'
+              }
+            },
+            credits: {
+              enabled: false
             }
-          }],
-          legend: {
-            enabled: data.showDataLegend,
-            itemStyle: {
-              width: '100%'
+          };
+          // Create and save chart object
+          Fliplet.Hooks.run('beforeChartRender', {
+            chartOptions: chartOpt,
+            id: data.id,
+            uuid: data.uuid,
+            type: 'column',
+            config: data
+          }).then(function () {
+            try {
+              new Highcharts.Chart(chartOpt);
+            } catch (e) {
+              return Promise.reject(e);
             }
-          },
-          credits: {
-            enabled: false
-          }
-        };
-        // Create and save chart object
-        Fliplet.Hooks.run('beforeChartRender', {
-          chartOptions: chartOpt,
-          id: data.id,
-          uuid: data.uuid,
-          type: 'column',
-          config: data
-        }).then(function () {
-          new Highcharts.Chart(chartOpt);
+          }).catch(reject);
         });
       }
 
@@ -388,6 +395,7 @@
 
       refreshData().then(drawChart).catch(function (error) {
         console.error(error);
+        getLatestData();
       });
     });
   }
