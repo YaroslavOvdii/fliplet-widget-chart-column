@@ -368,7 +368,7 @@
             }
           };
           // Create and save chart object
-          Fliplet.Hooks.run('beforeChartRender', {
+          return Fliplet.Hooks.run('beforeChartRender', {
             chartOptions: chartOpt,
             id: data.id,
             uuid: data.uuid,
