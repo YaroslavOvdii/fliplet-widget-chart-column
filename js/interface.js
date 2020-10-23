@@ -22,8 +22,10 @@ if (!data.dataSourceQuery && (data.dataSourceId || data.dataSourceColumn)) {
 
 var dsQueryData = {
   settings: {
-    dataSourceLabel: 'Select a data source',
-    defaultDataSourceName: 'Chart data for ' + Fliplet.Env.get('appName'),
+    dataSourceTitle: 'Select a data source',
+    default: {
+      name: 'Chart data for ' + Fliplet.Env.get('appName')
+    },
     modesDescription: 'How do you want your data to be plotted?',
     modes: [
       {
