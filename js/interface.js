@@ -24,7 +24,7 @@ var dsQueryData = {
   settings: {
     dataSourceTitle: 'Select a data source',
     default: {
-      name: `Chart data for ${Fliplet.Env.get('appName')}`
+      name: 'Chart data for ' + Fliplet.Env.get('appName')
     },
     modesDescription: 'How do you want your data to be plotted?',
     modes: [
@@ -42,7 +42,7 @@ var dsQueryData = {
             label: 'Select the column with the values',
             type: 'single'
           }
-        ],
+        ]
       },
       {
         label: 'Summarize my data',
@@ -66,7 +66,7 @@ var dsQueryData = {
       ]
     }
   ],
-  result: data.dataSourceQuery,
+  result: data.dataSourceQuery
 };
 
 var $dataSortOrder = $('#select-data-sort-order');
@@ -74,7 +74,7 @@ var $dataSortOrder = $('#select-data-sort-order');
 var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
   selector: '.data-source-query',
   data: dsQueryData,
-  onEvent(event, data) {
+  onEvent: function (event, data) {
     if (event === 'mode-changed') {
       switch (data.value) {
         case 0:
@@ -91,7 +91,7 @@ var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
 });
 
 function attachObservers() {
-  dsQueryProvider.then(function(result) {
+  dsQueryProvider.then(function (result) {
     Fliplet.Widget.save({
       // dataSourceId: parseInt($dataSource.val(), 10),
       // dataSourceColumn: $dataColumns.val(),
@@ -104,14 +104,14 @@ function attachObservers() {
       xAxisTitle: $('#x_axis_title').val(),
       showTotalEntries: $('#show_total_entries').is(':checked'),
       autoRefresh: $('#auto_refresh').is(':checked')
-    }).then(function() {
+    }).then(function () {
       Fliplet.Widget.complete();
       Fliplet.Studio.emit('reload-page-preview');
     });
   });
 
   // Fired from Fliplet Studio when the external save button is clicked
-  Fliplet.Widget.onSaveRequest(function() {
+  Fliplet.Widget.onSaveRequest(function () {
     dsQueryProvider.forwardSaveRequest();
   });
 }
