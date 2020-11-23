@@ -1,30 +1,30 @@
-var defaultData = {
+const defaultData = {
   dataSourceQuery: undefined,
   showDataLegend: true,
   showDataValues: true,
   yAxisTitle: '',
   xAxisTitle: '',
   showTotalEntries: false,
-  autoRefresh: false
+  autoRefresh: false,
 };
-var data = $.extend(defaultData, Fliplet.Widget.getData());
+const data = $.extend(defaultData, Fliplet.Widget.getData());
 
 if (!data.dataSourceQuery && (data.dataSourceId || data.dataSourceColumn)) {
   // Migrate from pre-dataSourceQuery configuration
   data.dataSourceQuery = {
     dataSourceId: data.dataSourceId,
     columns: {
-      column: data.dataSourceColumn
+      column: data.dataSourceColumn,
     },
-    selectedModeIdx: 1
+    selectedModeIdx: 1,
   };
 }
 
-var dsQueryData = {
+const dsQueryData = {
   settings: {
     dataSourceTitle: 'Select a data source',
     default: {
-      name: 'Chart data for ' + Fliplet.Env.get('appName')
+      name: `Chart data for ${Fliplet.Env.get('appName')}`,
     },
     modesDescription: 'How do you want your data to be plotted?',
     modes: [
@@ -35,14 +35,14 @@ var dsQueryData = {
           {
             key: 'category',
             label: 'Select the column with the categories',
-            type: 'single'
+            type: 'single',
           },
           {
             key: 'value',
             label: 'Select the column with the values',
-            type: 'single'
-          }
-        ]
+            type: 'single',
+          },
+        ],
       },
       {
         label: 'Summarize my data',
@@ -51,30 +51,30 @@ var dsQueryData = {
           {
             key: 'column',
             label: 'Select a column',
-            type: 'single'
-          }
-        ]
-      }
-    ]
+            type: 'single',
+          },
+        ],
+      },
+    ],
   },
   accessRules: [
     {
       allow: 'all',
       enabled: true,
       type: [
-        'select'
-      ]
-    }
+        'select',
+      ],
+    },
   ],
-  result: data.dataSourceQuery
+  result: data.dataSourceQuery,
 };
 
-var $dataSortOrder = $('#select-data-sort-order');
+const $dataSortOrder = $('#select-data-sort-order');
 
-var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
+const dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
   selector: '.data-source-query',
   data: dsQueryData,
-  onEvent: function (event, data) {
+  onEvent(event, data) {
     if (event === 'mode-changed') {
       switch (data.value) {
         case 0:
@@ -87,12 +87,11 @@ var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
       }
       return true; // Stop propagation up to studio or parent components
     }
-  }
+  },
 });
 
 function attachObservers() {
-  dsQueryProvider.then(function(result){
-    
+  dsQueryProvider.then((result) => {
     Fliplet.Widget.save({
       // dataSourceId: parseInt($dataSource.val(), 10),
       // dataSourceColumn: $dataColumns.val(),
@@ -100,18 +99,19 @@ function attachObservers() {
       dataSortOrder: $dataSortOrder.find(':selected').val(),
       showDataLegend: $('#show_data_legend').is(':checked'),
       showDataValues: $('#show_data_values').is(':checked'),
+      chartName: $('#chart_name').val(),
       yAxisTitle: $('#y_axis_title').val(),
       xAxisTitle: $('#x_axis_title').val(),
       showTotalEntries: $('#show_total_entries').is(':checked'),
-      autoRefresh: $('#auto_refresh').is(':checked')
-    }).then(function () {
+      autoRefresh: $('#auto_refresh').is(':checked'),
+    }).then(() => {
       Fliplet.Widget.complete();
       Fliplet.Studio.emit('reload-page-preview');
     });
   });
 
   // Fired from Fliplet Studio when the external save button is clicked
-  Fliplet.Widget.onSaveRequest(function () {
+  Fliplet.Widget.onSaveRequest(() => {
     dsQueryProvider.forwardSaveRequest();
   });
 }
@@ -122,6 +122,7 @@ attachObservers();
 if (data) {
   $('#show_data_legend').prop('checked', data.showDataLegend);
   $('#show_data_values').prop('checked', data.showDataValues);
+  $('#chart_name').val(data.chartName);
   $('#y_axis_title').val(data.yAxisTitle);
   $('#x_axis_title').val(data.xAxisTitle);
   $('#show_total_entries').prop('checked', data.showTotalEntries);
