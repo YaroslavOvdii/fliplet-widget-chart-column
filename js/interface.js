@@ -51,7 +51,7 @@ var dsQueryData = {
           {
             key: 'column',
             label: 'Select a column',
-            type: 'single',
+            type: 'single'
           }
         ]
       }
@@ -87,7 +87,7 @@ var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
       }
       return true; // Stop propagation up to studio or parent components
     }
-  },
+  }
 });
 
 function attachObservers() {
