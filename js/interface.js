@@ -91,7 +91,7 @@ var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
 });
 
 function attachObservers() {
-  dsQueryProvider.then(function (result) {
+  dsQueryProvider.then(function(result) {
     Fliplet.Widget.save({
       // dataSourceId: parseInt($dataSource.val(), 10),
       // dataSourceColumn: $dataColumns.val(),
