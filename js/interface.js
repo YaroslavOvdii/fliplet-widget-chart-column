@@ -1,30 +1,30 @@
-const defaultData = {
+var defaultData = {
   dataSourceQuery: undefined,
   showDataLegend: true,
   showDataValues: true,
   yAxisTitle: '',
   xAxisTitle: '',
   showTotalEntries: false,
-  autoRefresh: false,
+  autoRefresh: false
 };
-const data = $.extend(defaultData, Fliplet.Widget.getData());
+var data = $.extend(defaultData, Fliplet.Widget.getData());
 
 if (!data.dataSourceQuery && (data.dataSourceId || data.dataSourceColumn)) {
   // Migrate from pre-dataSourceQuery configuration
   data.dataSourceQuery = {
     dataSourceId: data.dataSourceId,
     columns: {
-      column: data.dataSourceColumn,
+      column: data.dataSourceColumn
     },
-    selectedModeIdx: 1,
+    selectedModeIdx: 1
   };
 }
 
-const dsQueryData = {
+var dsQueryData = {
   settings: {
     dataSourceTitle: 'Select a data source',
     default: {
-      name: `Chart data for ${Fliplet.Env.get('appName')}`,
+      name: `Chart data for ${Fliplet.Env.get('appName')}`
     },
     modesDescription: 'How do you want your data to be plotted?',
     modes: [
@@ -35,13 +35,13 @@ const dsQueryData = {
           {
             key: 'category',
             label: 'Select the column with the categories',
-            type: 'single',
+            type: 'single'
           },
           {
             key: 'value',
             label: 'Select the column with the values',
-            type: 'single',
-          },
+            type: 'single'
+          }
         ],
       },
       {
@@ -52,26 +52,26 @@ const dsQueryData = {
             key: 'column',
             label: 'Select a column',
             type: 'single',
-          },
-        ],
-      },
-    ],
+          }
+        ]
+      }
+    ]
   },
   accessRules: [
     {
       allow: 'all',
       enabled: true,
       type: [
-        'select',
-      ],
-    },
+        'select'
+      ]
+    }
   ],
   result: data.dataSourceQuery,
 };
 
-const $dataSortOrder = $('#select-data-sort-order');
+var $dataSortOrder = $('#select-data-sort-order');
 
-const dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
+var dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
   selector: '.data-source-query',
   data: dsQueryData,
   onEvent(event, data) {
@@ -91,7 +91,7 @@ const dsQueryProvider = Fliplet.Widget.open('com.fliplet.data-source-query', {
 });
 
 function attachObservers() {
-  dsQueryProvider.then((result) => {
+  dsQueryProvider.then(function(result) {
     Fliplet.Widget.save({
       // dataSourceId: parseInt($dataSource.val(), 10),
       // dataSourceColumn: $dataColumns.val(),
@@ -103,15 +103,15 @@ function attachObservers() {
       yAxisTitle: $('#y_axis_title').val(),
       xAxisTitle: $('#x_axis_title').val(),
       showTotalEntries: $('#show_total_entries').is(':checked'),
-      autoRefresh: $('#auto_refresh').is(':checked'),
-    }).then(() => {
+      autoRefresh: $('#auto_refresh').is(':checked')
+    }).then(function() {
       Fliplet.Widget.complete();
       Fliplet.Studio.emit('reload-page-preview');
     });
   });
 
   // Fired from Fliplet Studio when the external save button is clicked
-  Fliplet.Widget.onSaveRequest(() => {
+  Fliplet.Widget.onSaveRequest(function() {
     dsQueryProvider.forwardSaveRequest();
   });
 }
