@@ -443,6 +443,7 @@
 
       chartReady({
         name: data.chartName,
+        type: 'column',
         refresh: getLatestData
       });
     });
